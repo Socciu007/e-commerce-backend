@@ -92,7 +92,6 @@ const updateStore = (id, data) => {
         new: true,
       });
 
-      console.log(checkStore);
       resolve({
         status: "OK",
         message: "SUCCESS",

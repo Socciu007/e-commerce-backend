@@ -111,6 +111,7 @@ const returnsSchema = mongoose.Schema(
   {
     returnReason: { type: String, required: true },
     returnDescription: { type: String, required: true },
+    status: { type: String, required: true, default: "pending" }, //processing, completed, pending
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",

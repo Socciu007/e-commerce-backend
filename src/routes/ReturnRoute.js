@@ -1,11 +1,26 @@
-const express = require('express');
-const StoreController = require('../controllers/StoreController');
-const { authMiddleware, authUserMiddleware } = require('../middlewares/AuthMiddleware');
+const express = require("express");
+const ReturnController = require("../controllers/ReturnController");
+const {
+  authMiddleware,
+  authUserMiddleware,
+} = require("../middlewares/AuthMiddleware");
 const router = express.Router();
 
-router.get('/get-stores', StoreController.getAllStore);
-router.get('/get-store/:id', StoreController.getDetailsStore);
-router.post('/create-store', StoreController.createStore);
-router.put('/update-store/:id', StoreController.updateStore);
+router.get("/returns", authUserMiddleware, ReturnController.getAllReturns);
+router.get(
+  "/returns/:id",
+  authUserMiddleware,
+  ReturnController.getDetailsReturn
+);
+router.post(
+  "/create-return",
+  authUserMiddleware,
+  ReturnController.createReturn
+);
+router.put(
+  "/update-return/:id",
+  authUserMiddleware,
+  ReturnController.updateReturn
+);
 
 module.exports = router;

@@ -1,8 +1,8 @@
-const StoreService = require("../services/StoreService");
+const ReturnService = require("../services/ReturnService");
 
-const getAllStore = async (req, res) => {
+const getAllReturns = async (req, res) => {
   try {
-    const response = await StoreService.getAllStore();
+    const response = await ReturnService.getAllReturns();
     return res.status(200).json(response);
   } catch (error) {
     return res.status(404).json({
@@ -11,10 +11,10 @@ const getAllStore = async (req, res) => {
   }
 };
 
-const getDetailsStore = async (req, res) => {
+const getDetailsReturn = async (req, res) => {
   try {
-    const storeID = req.params.id;
-    const response = await StoreService.getDetailsStore(storeID);
+    const returnID = req.params.id;
+    const response = await ReturnService.getDetailsReturn(returnID);
     return res.status(200).json(response);
   } catch (error) {
     return res.status(404).json({
@@ -23,25 +23,17 @@ const getDetailsStore = async (req, res) => {
   }
 };
 
-const createStore = async (req, res) => {
+const createReturn = async (req, res) => {
   try {
-    const { name, email, logo, description } = req.body;
-    //Validation email address
-    const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-    const isCheckEmail = reg.test(email);
-
-    if (!email || !name || !logo) {
+    const { returnReason, returnDescription, status, user, order, product } =
+      req.body;
+    if (!user || !product || !order || !returnReason || !returnDescription) {
       return res.status(200).json({
         status: "ERR",
         message: "The input is required.",
       });
-    } else if (!isCheckEmail) {
-      return res.status(200).json({
-        status: "ERR",
-        message: "The input is email.",
-      });
     }
-    const response = await StoreService.createStore(req.body);
+    const response = await ReturnService.createReturn(req.body);
     return res.status(200).json(response);
   } catch (error) {
     return res.status(404).json({
@@ -50,12 +42,11 @@ const createStore = async (req, res) => {
   }
 };
 
-const updateStore = async (req, res) => {
+const updateReturn = async (req, res) => {
   try {
     const storeID = req.params.id;
     const data = req.body;
-    const response = await StoreService.updateStore(storeID, data);
-    console.log("t", response);
+    const response = await ReturnService.updateReturn(storeID, data);
     return res.status(200).json(response);
   } catch (error) {
     return res.status(404).json({
@@ -65,8 +56,8 @@ const updateStore = async (req, res) => {
 };
 
 module.exports = {
-  getAllStore,
-  getDetailsStore,
-  createStore,
-  updateStore,
+  getAllReturns,
+  getDetailsReturn,
+  createReturn,
+  updateReturn,
 };

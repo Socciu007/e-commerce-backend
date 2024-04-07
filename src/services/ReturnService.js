@@ -1,13 +1,13 @@
-const Store = require("../models/StoreModel");
+const { Returns } = require("../models/model.js");
 
-const getAllStore = () => {
+const getAllReturns = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const stores = await Store.find();
+      const returns = await Returns.find();
       resolve({
         status: "OK",
         message: "SUCCESS",
-        data: stores,
+        data: returns,
       });
     } catch (error) {
       reject(error);
@@ -15,24 +15,24 @@ const getAllStore = () => {
   });
 };
 
-const getDetailsStore = (id) => {
+const getDetailsReturn = (id) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const store = await Store.findOne({
+      const refundForm = await Returns.findOne({
         _id: id,
       });
 
-      if (store === null) {
+      if (refundForm === null) {
         resolve({
           status: "OK",
-          message: "The store is not exist.",
+          message: "The refund form is not exist.",
         });
       }
 
       resolve({
         status: "OK",
         message: "SUCCESS",
-        data: store,
+        data: refundForm,
       });
     } catch (error) {
       reject(error);
@@ -40,32 +40,24 @@ const getDetailsStore = (id) => {
   });
 };
 
-const createStore = (newStore) => {
+const createReturn = (newReturn) => {
   return new Promise(async (resolve, reject) => {
-    const { name, email, logo, description, user } = newStore;
+    const { returnReason, returnDescription, status, user, order, product } =
+      newReturn;
     try {
-      const checkStore = await Store.findOne({
-        name: name,
-      });
-      if (checkStore !== null) {
-        resolve({
-          status: "ERR",
-          message: "The store is already.",
-        });
-      }
-
-      const createdStore = await Store.create({
-        name,
-        email,
-        logo,
-        description,
+      const createdReturn = await Returns.create({
+        returnReason: returnReason,
+        returnDescription: returnDescription,
+        status,
         user: user,
+        order: order,
+        product: product,
       });
-      if (createdStore) {
+      if (createdReturn) {
         resolve({
           status: "OK",
           message: "SUCCESS",
-          data: createdStore,
+          data: createdReturn,
         });
       }
     } catch (error) {
@@ -74,29 +66,28 @@ const createStore = (newStore) => {
   });
 };
 
-const updateStore = (id, data) => {
+const updateReturn = (id, data) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const checkStore = await Store.findOne({
+      const checkReturn = await Returns.findOne({
         _id: id,
       });
 
-      if (checkStore === null) {
+      if (checkReturn === null || checkReturn.length < 1) {
         resolve({
           status: "OK",
-          message: "The store is not exist.",
+          message: "The return is not exist.",
         });
       }
 
-      const updatedStore = await Store.findByIdAndUpdate(id, data, {
+      const updatedReturn = await Returns.findByIdAndUpdate(id, data, {
         new: true,
       });
 
-      console.log(checkStore);
       resolve({
         status: "OK",
         message: "SUCCESS",
-        data: updatedStore,
+        data: updatedReturn,
       });
     } catch (error) {
       reject(error);
@@ -105,8 +96,8 @@ const updateStore = (id, data) => {
 };
 
 module.exports = {
-  getAllStore,
-  getDetailsStore,
-  createStore,
-  updateStore,
+  getAllReturns,
+  getDetailsReturn,
+  createReturn,
+  updateReturn,
 };
