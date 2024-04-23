@@ -1,10 +1,32 @@
 const mongoose = require("mongoose");
 
+//Code
+const codeSchema = new mongoose.Schema(
+  {
+    code: { type: String, required: true, length: 6, trim: true },
+    email: {
+      type: String,
+      match: /^\S+@\S+\.\S+$/,
+      required: true,
+      lowercase: true,
+      trim: true,
+    },
+    store: { type: mongoose.Schema.Types.ObjectId, ref: "Stores" },
+  },
+  { timestamps: true }
+);
+const Code = mongoose.model("Code", codeSchema);
 //Store
 const storeSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    email: { type: String, required: true },
+    email: {
+      type: String,
+      match: /^\S+@\S+\.\S+$/,
+      required: true,
+      lowercase: true,
+      trim: true,
+    },
     logo: { type: String, required: true },
     description: { type: String, required: true },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
@@ -140,4 +162,5 @@ module.exports = {
   Supply,
   Vouchers,
   Store,
+  Code,
 };

@@ -1,9 +1,11 @@
-const nodemailer = require('nodemailer')
-const dotenv = require('dotenv');
-dotenv.config()
-var inlineBase64 = require('nodemailer-plugin-inline-base64');
+const nodemailer = require("nodemailer");
+const sgMail = require("@sendgrid/mail");
+const dotenv = require("dotenv");
+dotenv.config();
+var inlineBase64 = require("nodemailer-plugin-inline-base64");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const sendEmailCreateOrder = async (email,orderItems) => {
+const sendEmailCreateOrder = async (email, orderItems) => {
   let transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,
@@ -13,18 +15,18 @@ const sendEmailCreateOrder = async (email,orderItems) => {
       pass: process.env.MAIL_PASSWORD, // generated ethereal password
     },
   });
-  transporter.use('compile', inlineBase64({cidPrefix: 'somePrefix_'}));
+  transporter.use("compile", inlineBase64({ cidPrefix: "somePrefix_" }));
 
-  let listItem = '';
-  const attachImage = []
+  let listItem = "";
+  const attachImage = [];
   orderItems.forEach((order) => {
     listItem += `<div>
     <div>
       Bạn đã đặt sản phẩm <b>${order.name}</b> với số lượng: <b>${order.amount}</b> và giá là: <b>${order.price} VND</b></div>
       <div>Bên dưới là hình ảnh của sản phẩm</div>
-    </div>`
-    attachImage.push({path: order.image})
-  })
+    </div>`;
+    attachImage.push({ path: order.image });
+  });
 
   // send mail with defined transport object
   let info = await transporter.sendMail({
@@ -35,8 +37,27 @@ const sendEmailCreateOrder = async (email,orderItems) => {
     html: `<div><b>Bạn đã đặt hàng thành công tại Go Tech</b></div> ${listItem}`,
     attachments: attachImage,
   });
-}
+};
+
+const sendEmailCreateCode = async (to, subject, text) => {
+  const msg = {
+    to: to,
+    from: process.env.MAIL_ACCOUNT, // Thay thế bằng email của bạn
+    subject: subject,
+    text: text,
+  };
+
+  try {
+    await sgMail.send(msg);
+    console.log("Email sent successfully");
+    return 1;
+  } catch (error) {
+    console.error("Error sending email:", error);
+    return -1;
+  }
+};
 
 module.exports = {
-  sendEmailCreateOrder
-}
+  sendEmailCreateOrder,
+  sendEmailCreateCode,
+};

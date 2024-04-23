@@ -1,4 +1,7 @@
+const { Code } = require("../models/model");
 const Store = require("../models/StoreModel");
+const { randomStringNumber } = require("../utils");
+const { sendEmailCreateCode } = require("./EmailService");
 
 const getAllStore = () => {
   return new Promise(async (resolve, reject) => {
@@ -68,6 +71,25 @@ const createStore = (newStore) => {
           data: createdStore,
         });
       }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+const sendCode = (body) => {
+  return new Promise(async (resolve, reject) => {
+    const { email, store } = body;
+    try {
+      const code = randomStringNumber(6);
+      await Code.deleteMany({ email });
+      await Code.create({ code: code, email: email, store: store });
+      await sendEmailCreateCode(
+        email,
+        "GOTECH-CODE",
+        `Code cua ban la ${code}`
+      );
+      next();
     } catch (error) {
       reject(error);
     }

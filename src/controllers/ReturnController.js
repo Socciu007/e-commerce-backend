@@ -44,9 +44,9 @@ const createReturn = async (req, res) => {
 
 const updateReturn = async (req, res) => {
   try {
-    const storeID = req.params.id;
+    const returnID = req.params.id;
     const data = req.body;
-    const response = await ReturnService.updateReturn(storeID, data);
+    const response = await ReturnService.updateReturn(returnID, data);
     return res.status(200).json(response);
   } catch (error) {
     return res.status(404).json({
