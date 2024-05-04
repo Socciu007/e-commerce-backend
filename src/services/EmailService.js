@@ -50,10 +50,10 @@ const sendEmailCreateCode = async (to, subject, text) => {
   try {
     await sgMail.send(msg);
     console.log("Email sent successfully");
-    return 1;
+    return { success: true };
   } catch (error) {
     console.error("Error sending email:", error);
-    return -1;
+    return { success: false, error: error.message };
   }
 };
 

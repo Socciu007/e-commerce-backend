@@ -50,6 +50,17 @@ const createStore = async (req, res) => {
   }
 };
 
+const createCode = async (req, res) => {
+  try {
+    const response = await StoreService.sendCode();
+    return res.status(200).json(response);
+  } catch (error) {
+    return res.status(404).json({
+      message: error,
+    });
+  }
+};
+
 const updateStore = async (req, res) => {
   try {
     const storeID = req.params.id;
@@ -77,4 +88,5 @@ module.exports = {
   getDetailsStore,
   createStore,
   updateStore,
+  createCode,
 };

@@ -11,7 +11,6 @@ const codeSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
-    store: { type: mongoose.Schema.Types.ObjectId, ref: "Stores" },
   },
   { timestamps: true }
 );

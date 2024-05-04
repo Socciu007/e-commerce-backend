@@ -77,19 +77,22 @@ const createStore = (newStore) => {
   });
 };
 
-const sendCode = (body) => {
+const sendCode = () => {
   return new Promise(async (resolve, reject) => {
-    const { email, store } = body;
+    const { email } = req;
     try {
       const code = randomStringNumber(6);
       await Code.deleteMany({ email });
-      await Code.create({ code: code, email: email, store: store });
+      await Code.create({ code: code, email: email });
       await sendEmailCreateCode(
         email,
         "GOTECH-CODE",
         `Code cua ban la ${code}`
       );
-      next();
+      resolve({
+        status: "OK",
+        message: "Success",
+      });
     } catch (error) {
       reject(error);
     }
@@ -130,4 +133,5 @@ module.exports = {
   getDetailsStore,
   createStore,
   updateStore,
+  sendCode,
 };
