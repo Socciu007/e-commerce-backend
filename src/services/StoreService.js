@@ -45,15 +45,15 @@ const getDetailsStore = (id) => {
 
 const createStore = (newStore) => {
   return new Promise(async (resolve, reject) => {
-    const { name, email, logo, description, user } = newStore;
+    const { name, email, logo, description, code, user } = newStore;
     try {
-      const checkStore = await Store.findOne({
-        name: name,
+      const checkCode = await Code.findOne({
+        email: email,
       });
-      if (checkStore !== null) {
+      if (!checkCode || checkCode.code !== code) {
         resolve({
           status: "ERR",
-          message: "The store is already.",
+          message: "Code is incorrect.",
         });
       }
 
