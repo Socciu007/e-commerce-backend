@@ -77,9 +77,9 @@ const createStore = (newStore) => {
   });
 };
 
-const sendCode = () => {
+const sendCode = (info) => {
   return new Promise(async (resolve, reject) => {
-    const { email } = req;
+    const { email, name, logo } = info;
     try {
       const code = randomStringNumber(6);
       await Code.deleteMany({ email });
@@ -87,7 +87,7 @@ const sendCode = () => {
       await sendEmailCreateCode(
         email,
         "GOTECH-CODE",
-        `Code cua ban la ${code}`
+        `Code của bạn là ${code}`
       );
       resolve({
         status: "OK",

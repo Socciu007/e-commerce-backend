@@ -1,9 +1,9 @@
 const nodemailer = require("nodemailer");
-const sgMail = require("@sendgrid/mail");
+// const sgMail = require("@sendgrid/mail");
 const dotenv = require("dotenv");
 dotenv.config();
 var inlineBase64 = require("nodemailer-plugin-inline-base64");
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const sendEmailCreateOrder = async (email, orderItems) => {
   let transporter = nodemailer.createTransport({
@@ -40,21 +40,23 @@ const sendEmailCreateOrder = async (email, orderItems) => {
 };
 
 const sendEmailCreateCode = async (to, subject, text) => {
-  const msg = {
-    to: to,
-    from: process.env.MAIL_ACCOUNT, // Thay thế bằng email của bạn
-    subject: subject,
-    text: text,
-  };
-
-  try {
-    await sgMail.send(msg);
-    console.log("Email sent successfully");
-    return { success: true };
-  } catch (error) {
-    console.error("Error sending email:", error);
-    return { success: false, error: error.message };
-  }
+  let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true, // true for 465, false for other ports
+    auth: {
+      user: process.env.MAIL_ACCOUNT, // generated ethereal user
+      pass: process.env.MAIL_PASSWORD, // generated ethereal password
+    },
+  });
+  transporter.use("compile", inlineBase64({ cidPrefix: "somePrefix_" }));
+  // send mail with defined transport object
+  let info = await transporter.sendMail({
+    from: process.env.MAIL_ACCOUNT, // sender address
+    to: to, // list of receivers
+    subject: subject, // Subject line
+    text: text, // plain text body
+  });
 };
 
 module.exports = {
