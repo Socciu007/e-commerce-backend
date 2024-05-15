@@ -50,10 +50,17 @@ const createStore = (newStore) => {
       const checkCode = await Code.findOne({
         email: email,
       });
+      const store = await Store.findOne({ user: user });
       if (!checkCode || checkCode.code !== code) {
         resolve({
           status: "ERR",
           message: "Code is incorrect.",
+        });
+      }
+      if (store) {
+        resolve({
+          status: "ERR",
+          message: "The store already exists.",
         });
       }
 

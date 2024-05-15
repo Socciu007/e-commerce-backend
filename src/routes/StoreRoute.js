@@ -4,8 +4,8 @@ const { authUserMiddleware } = require("../middlewares/AuthMiddleware");
 const router = express.Router();
 
 router.get("/stores", StoreController.getAllStore);
-router.get("/stores/:id", authUserMiddleware, StoreController.getDetailsStore);
-router.post("/create-store", authUserMiddleware, StoreController.createStore);
+router.get("/stores/:id", StoreController.getDetailsStore);
+router.post("/create-store", StoreController.createStore);
 router.post("/create-code", StoreController.createCode);
 router.put(
   "/update-store/:id",
