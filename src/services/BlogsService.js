@@ -1,3 +1,4 @@
+const User = require("../models/UserModel");
 const { Blogs } = require("../models/model");
 
 const getAllBlogs = () => {
@@ -42,12 +43,22 @@ const getDetailBlogs = (id) => {
 
 const createBlog = (newBlog) => {
   return new Promise(async (resolve, reject) => {
-    const { title, content, image } = newBlog;
+    const { title, content, image, description, user } = newBlog;
     try {
-      const createBlog = await Blog.create({
+      const admin = await User.findOne({ _id: user });
+      console.log(admin);
+      if (user === null) {
+        resolve({
+          status: "ERR",
+          message: "User is not exist",
+        });
+      }
+      const createBlog = await Blogs.create({
         title,
         content,
         image,
+        description,
+        user,
       });
       if (createBlog) {
         resolve({
@@ -65,7 +76,7 @@ const createBlog = (newBlog) => {
 const updateBlog = (id, data) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const blog = await Store.findOne({
+      const blog = await Blogs.findOne({
         _id: id,
       });
 
@@ -94,7 +105,7 @@ const updateBlog = (id, data) => {
 const deleteBlog = (id) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const blog = await User.findOne({
+      const blog = await Blogs.findOne({
         _id: id,
       });
 

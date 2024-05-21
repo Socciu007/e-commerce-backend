@@ -26,7 +26,6 @@ const getDetailBlogs = async (req, res) => {
 const createBlog = async (req, res) => {
   try {
     const { title, content, image } = req.body;
-
     if (!title || !content || !image) {
       return res.status(200).json({
         status: "ERR",
