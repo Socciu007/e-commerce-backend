@@ -57,6 +57,7 @@ const createStore = (newStore) => {
           message: "Code is incorrect.",
         });
       }
+
       if (store) {
         resolve({
           status: "ERR",
@@ -65,10 +66,10 @@ const createStore = (newStore) => {
       }
 
       const createdStore = await Store.create({
-        name,
-        email,
-        logo,
-        description,
+        name: name,
+        email: email,
+        logo: logo,
+        description: description,
         user: user,
       });
       if (createdStore) {

@@ -1,9 +1,6 @@
 const express = require("express");
 const ReturnController = require("../controllers/ReturnController");
-const {
-  authMiddleware,
-  authUserMiddleware,
-} = require("../middlewares/AuthMiddleware");
+const { authUserMiddleware } = require("../middlewares/AuthMiddleware");
 const router = express.Router();
 
 router.get("/returns", authUserMiddleware, ReturnController.getAllReturns);

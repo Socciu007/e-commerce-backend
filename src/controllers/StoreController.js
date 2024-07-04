@@ -35,7 +35,8 @@ const createStore = async (req, res) => {
         status: "ERR",
         message: "The input is required.",
       });
-    } else if (!isCheckEmail) {
+    }
+    if (!isCheckEmail) {
       return res.status(200).json({
         status: "ERR",
         message: "The input is email.",

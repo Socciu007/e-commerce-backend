@@ -46,7 +46,6 @@ const createBlog = (newBlog) => {
     const { title, content, image, description, user } = newBlog;
     try {
       const admin = await User.findOne({ _id: user });
-      console.log(admin);
       if (user === null) {
         resolve({
           status: "ERR",

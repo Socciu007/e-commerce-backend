@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const storeSchema = new mongoose.Schema(
   {
     name: { type: String, require: true },
-    email: { type: String, require: true, unique: true },
+    email: { type: String, require: true },
     logo: { type: String, require: true },
     description: { type: String, require: true },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
